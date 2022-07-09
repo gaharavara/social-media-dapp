@@ -8,10 +8,13 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
 </head>
 <body>
 <div class="container">
   <center>
+  <h2>User Id</h2>
+  <div id="wallet"></div>
   <h2>Share image</h2>
   <input id="fileUpload" type="file" class="btn btn-primary">Select File</input>
   <br /><br />
@@ -45,5 +48,17 @@
     reader.readAsArrayBuffer(this.files[0]);
 
   }, false);
+</script>
+<script>
+async function connectToMetamask(){
+  const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+  // Prompt user for account connections
+  await provider.send("eth_requestAccounts", []);
+  const signer = provider.getSigner();
+  const userAddress = await signer.getAddress();
+  console.log("Account:", userAddress);
+  document.getElementById("wallet").innerText = userAddress;
+}
+connectToMetamask();
 </script>
 </html>
